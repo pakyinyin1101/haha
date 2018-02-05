@@ -20,8 +20,7 @@ server_address = ("", PORT)
 
 httpd = server_class(server_address, handler_class)
 
-# url = 'http://localhost:{0}/{1}'.format(PORT, script_path)
-url = 'http://localhost:{0}/{1}'.format(PORT, 'index.html')
+url = 'http://localhost:{0}/{1}'.format(PORT, script_path)
 
 webbrowser.open_new_tab(url)
 
