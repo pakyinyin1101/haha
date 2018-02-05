@@ -1,60 +1,36 @@
-==========================
-Simple python2 cgi script.
-==========================
+=============================
+How to deploy it on openshift
+=============================
 
 ----------
 Quickstart
 ----------
 
-Clone the repo::
+- Create a project::
 
-    git clone https://github.com/nbeaver/python-cgi-example
+oc new-project python-cgi-example
 
-Move into the directory::
+- New an APP using the python 2.7 and the source code in the github::
 
-    cd python-cgi-example
+oc new-app python:2.7~https://github.com/ayueei/python-cgi-example.git --name=hit-counter
 
-Run this command::
+- OpenShift will kick off build and deployment automatically. Then expose the service by::
 
-    python2 ./http-server.py
+oc expose svc/hit-counter --path=/cgi-bin/hit-counter.py
 
-This should open a browser page showing the current date
-and a hit counter that increases each time the page is reloaded.
+- Now you can visit the generated link in the web console.
 
-Modify `<cgi-bin/hit-counter.py>`_ and reload the page to see the effects.
+-----
+Notes
+-----
 
-Hit ``Ctrl-C`` to stop the web browser once you are finished.
+There are some notes that you need to pay attention to (or your application may fail)
 
-----------
-Motivation
-----------
+- Name the script that activates a server as app.py (default in OpenShift), or if you use another name, you need to add an environment variable in deployconfig: APP_FILE=<your_file>
 
-Most tutorials for Python CGI scripts I have found have techical flaws such as:
+- Make sure the scripts are executable (use "chmod +x <your_file>" to make the file executable)
 
-- Requiring installation of a web server like ``apache``
-  instead of just serving from a local directory using Python's ``SimpleHTTPServer``.
+- Add "#!/usr/bin/env python" into the first line of your python scripts
 
-- Requiring write access to directories like ``/var/www/cgi-bin/``.
+- When creating the route, you need to specify the path to your target script. ("/cgi-bin/hit-counter.py" in this example)
 
-- Not opening the browser to the correct page when the server starts.
-
-- Not storing the cgi script in a separate directory from the server source code.
-
-- Not providing the code in a convenient bundle to download, run, and modify.
-
-as well as pedagogical flaws such as:
-
-- Not distinguishing the HTTP header from the HTML.
-
-- Sending plain text instead of HTML.
-
-- Sending static HTML instead of dynamic output.
-
-- Sending dynamic output that could be done entirely client-side.
-
-The included `CGI script`_ is a simple hit counter
-that writes to a file on disk to store the count.
-
-.. _CGI script: cgi-bin/hit-counter.py
-
-.. note:: This is a pedagogical exercise, and is not the best way to implement a hit counter in general.
