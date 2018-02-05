@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 
 # https://pointlessprogramming.wordpress.com/2011/02/13/python-cgi-tutorial-1/
 # https://docs.python.org/2/library/basehttpserver.html
