@@ -6,6 +6,7 @@
 
 import BaseHTTPServer
 import CGIHTTPServer
+import cgitb;cgitb.enable()
 import webbrowser
 
 PORT = 8080
