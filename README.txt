@@ -1,3 +1,6 @@
+
+
+
 app.py:It starts the program to open the server.It links the /cgi-bin/index.py.
 
 /cgi-bin/index.py:It generates the Index page. It have function to upload photo,create account
