@@ -12,7 +12,7 @@ PORT = 8000
 #TODO: check that port is available,
 # and look for a different one if it isn't.
 
-script_path = "cgi-bin/index.html"
+script_path = "index.html"
 #"database/data_base.py"
 
 server_class = BaseHTTPServer.HTTPServer
