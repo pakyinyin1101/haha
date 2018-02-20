@@ -1,5 +1,5 @@
 
-
+Sorry, I can't generate it in Openshift but it works in localhost.
 
 app.py:It starts the program to open the server.It links the /cgi-bin/index.py.
 
