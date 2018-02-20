@@ -54,6 +54,19 @@ def insert_login_data(conn,user,word):
 	conn.commit()
 	print'insert success!'
 
+def create_session_database(db_file):
+	db_not_yet_create = not os.path.exists(db_file)
+	conn2 = sqlite3.connect(db_file)
+	if db_not_yet_create:
+		print'Create a new session table!'
+		sql='''create table if not exists SESSIONDATA
+		(USERNAME CHAR(20),
+		SESSION INTEGER);'''
+		conn2.execute(sql)
+	else:
+		print'login table exist'
+	return conn2
+
 conn=create_login_database('login_db.sqite')
 form=cgi.FieldStorage()
 try:
@@ -104,6 +117,10 @@ if(state==0):
 		</form>'''
 if(state==1):
 	insert_login_data(conn,sendusername,sendpassword)
+	conn2=create_session_database('session_db.sqite')
+	sql='''INSERT INTO SESSIONDATA(USERNAME,SESSION) VALUES(?,-1);'''
+	conn2.cursor().execute(sql,[sendusername])
+	conn2.commit()
 	print'account success create!<br/>'
 	print'''<form action="login.py" method="post">
 	 	Go to<input type ="submit" value="login" name="submit" />
