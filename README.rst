@@ -15,4 +15,10 @@ app.py:It starts the program to open the server.It links the /cgi-bin/index.py.
 
 /cgi-bin/updateexe.py:It reads the current password, new password and new repassword from /cgi-bin/create.py.It updates username and password.
 
-/cgi-bin/redirect.py:
+/cgi-bin/redirect.py:It deletes the cookies.
+
+login.db.sqite:It stores usersname and password.
+
+session.db.sqite:It stores username and their session.
+-----------------------------------------------------------------------------------------------------------------------------
+I spend many time to set up and cant uplaod the photoes.Therefore I only do milestones one.
