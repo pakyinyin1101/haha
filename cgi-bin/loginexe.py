@@ -131,6 +131,10 @@ if(state==1):
 	conn2.cursor().execute(sql,[session,sendusername])
 	conn2.commit()
 	print'insert success!'
+	print'''
+	<form action="update.py" method="post">
+	change password? <input type ="submit" value="change password" name="submit" />
+	</form>'''
 
 print'success'
 
