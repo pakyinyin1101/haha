@@ -20,13 +20,10 @@ def create_session_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn2 = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new session table!'
 		sql='''create table if not exists SESSIONDATA
 		(USERNAME CHAR(20),
 		SESSION INTEGER);'''
 		conn2.execute(sql)
-	else:
-		print'login table exist'
 	return conn2
 
 print'<html><body>'
@@ -36,8 +33,6 @@ state=2
 
 try:
     cookie = Cookie.SimpleCookie(os.environ["HTTP_COOKIE"])
-    print "session = " + cookie["session"].value
-    print "user =" + cookie["user"].value
     session = cookie["session"].value
     usercookie = cookie["user"].value
 
@@ -46,7 +41,6 @@ try:
     sql="SELECT SESSION FROM SESSIONDATA WHERE USERNAME =?;"
     cur.execute(sql,[usercookie])
     checksession = cur.fetchone()
-    print checksession
     if(checksession==None):
     	print 'empty checksession'
     	issetcookie=0
@@ -54,25 +48,8 @@ try:
     	print 'active cookie'
     	issetcookie = 1
 
-
-
-	'''dbusername=cur.fetchone()
-	if(dbusername == None):
-		print 'valid account'
-		return 1
-	idlist=set(id.lower() for id in dbusername)
-	if user.lower() in idlist:
-		print 'exist username'
-		return 0
-	else:
-		print'valid account'
-		return 1'''
-
-
-    
-
 except (Cookie.CookieError, KeyError):
-    print "session cookie not set!"
+    print''
 
 if(issetcookie==1):
 	print'''

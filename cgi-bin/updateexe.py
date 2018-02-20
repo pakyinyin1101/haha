@@ -15,13 +15,10 @@ def create_session_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn2 = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new session table!'
 		sql='''create table if not exists SESSIONDATA
 		(USERNAME CHAR(20),
 		SESSION INTEGER);'''
 		conn2.execute(sql)
-	else:
-		print'login table exist'
 	return conn2
 
 print"Content-type:text/html\n\n"
@@ -32,11 +29,10 @@ cgitb.enable()
 print'<html><body>'
 
 issetcookie =0
+state=2
 
 try:
     cookie = Cookie.SimpleCookie(os.environ["HTTP_COOKIE"])
-    print "session = " + cookie["session"].value
-    print "user =" + cookie["user"].value
     session = cookie["session"].value
     usercookie = cookie["user"].value
     conn2 = create_session_database('session_db.sqite')
@@ -44,29 +40,23 @@ try:
     sql="SELECT SESSION FROM SESSIONDATA WHERE USERNAME =?;"
     cur.execute(sql,[usercookie])
     checksession = cur.fetchone()
-    print checksession
     if(checksession==None):
-    	print 'empty checksession'
     	issetcookie=0
     elif(int(checksession[0]) == int(session)):
-    	print 'active cookie'
     	issetcookie = 1
 
 except (Cookie.CookieError, KeyError):
-    print "session cookie not set!"
+    print''
 
 def create_login_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new login table!'
 		sql='''create table if not exists LOGINDATA
 		(USERID INTEGER PRIMARY KEY AUTOINCREMENT,
 		USERNAME CHAR(20),
 		PASSWORD CHAR(20));'''
 		conn.execute(sql)
-	else:
-		print'login table exist'
 	return conn
 
 def check_login_password(conn,user,word):
@@ -75,22 +65,17 @@ def check_login_password(conn,user,word):
 	cur.execute(sql,[user])
 	dbpassword=cur.fetchone()
 	if(dbpassword == None):
-		print 'INVALID USERNAME'
 		return 0
 	tmp=dbpassword[0]
-	print tmp
 	if(tmp == word):
-		print'valid password'
 		return 1
 	else:
-		print 'invalid password'
 		return 0
 
 def change_login_password(conn,user,word):
 	sql='''UPDATE LOGINDATA SET PASSWORD = ? WHERE USERNAME=?;'''
 	conn.cursor().execute(sql,[word,user])
 	conn.commit()
-	print 'update'
 
 if(issetcookie==1):
 	conn=create_login_database('login_db.sqite')
@@ -101,21 +86,17 @@ if(issetcookie==1):
 	except IndexError:
 		sendcurpassword=None
 
-	print sendcurpassword
 
 	try:
 		sendnewpassword=form.getvalue('newpassword',None)
 	except IndexError:
 		sendnewpassword=None
 
-	print sendnewpassword
-
 	try:
 		sendnewrepassword=form.getvalue('newrepassword',None)
 	except IndexError:
 		sendnewrepassword=None
 
-	print sendnewrepassword
 
 	if(sendnewpassword!= sendnewrepassword):
 		print'password is not equal to sendrepassword!<br/>'
@@ -152,7 +133,5 @@ if(issetcookie==1):
 	 	Create another account?<input type ="submit" value="register" name="submit" />
 		</form>
 		'''
-
-	print'success'
 
 print'</body></html>'

@@ -25,7 +25,7 @@ except IndexError:
 
 expiration = datetime.datetime.now() + datetime.timedelta(days=30)
 cookie = Cookie.SimpleCookie()
-cookie["session"] = random.randint(0,1000)
+cookie["session"] = random.randint(0,100000)
 cookie["session"]["path"] = "/"
 cookie["user"] = sendusername
 cookie["user"]["path"] = "/"
@@ -34,7 +34,6 @@ cookie["session"]["expires"] = \
 cookie["user"]["expires"] = \
   expiration.strftime("%a, %d-%b-%Y %H:%M:%S PST")
 
-print cookie.output()
 print"Content-type:text/html\n\n"
 
 print
@@ -42,13 +41,11 @@ print
 cgitb.enable()
 
 session=cookie["session"].value
-print session
 
 try:
     checksession = cookie["session"].value
-    print'haha'
 except (Cookie.CookieError, KeyError):
-    print "session cookie not set!"
+	print''
 
 print'<html><body>'
 
@@ -56,27 +53,21 @@ def create_login_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new login table!'
 		sql='''create table if not exists LOGINDATA
 		(USERID INTEGER PRIMARY KEY AUTOINCREMENT,
 		USERNAME CHAR(20),
 		PASSWORD CHAR(20));'''
 		conn.execute(sql)
-	else:
-		print'login table exist'
 	return conn
 
 def create_session_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn2 = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new session table!'
 		sql='''create table if not exists SESSIONDATA
 		(USERNAME CHAR(20),
 		SESSION INTEGER);'''
 		conn2.execute(sql)
-	else:
-		print'login table exist'
 	return conn2
 
 
@@ -86,18 +77,15 @@ def check_login_data(conn,user,word):
 	cur.execute(sql,{'user1':user})
 	dbpassword=cur.fetchone()
 	if(dbpassword == None):
-		print 'no username exist'
 		return 0
 	tmp=dbpassword[0]
 	if (word == tmp):
-		print 'correct account!'
 		return 1
 	else:
-		print'incorrect password'
 		return 0
 
 def delete_cookie():
-	 print'<meta http-equiv="refresh" content="2;url=redirect.py">'
+	 print'<meta http-equiv="refresh" content="2;url=clear.py">'
 
 conn=create_login_database('login_db.sqite')
 
@@ -123,7 +111,6 @@ if(sendusername ==None or sendpassword== None ):
 
 state=check_login_data(conn,sendusername,sendpassword)
 if(state==0):
-	print'no correct account data'
 	delete_cookie()
 if(state==1):
 	conn2=create_session_database('session_db.sqite')
@@ -133,10 +120,18 @@ if(state==1):
 	print'insert success!'
 	print'''
 	<form action="update.py" method="post">
-	change password? <input type ="submit" value="change password" name="submit" />
+	change password? <input type ="submit" value="change" name="submit" />
+	</form>'''
+	print'''
+	<form action="redirect.py" method="post">
+	 <input type ="submit" value="logout" name="submit" />
+	</form>'''
+	print'''
+	<form action="index.py" method="post">
+	see photo <input type ="submit" value="GO" name="submit" />
 	</form>'''
 
-print'success'
+
 
 print'</body></html>'
 

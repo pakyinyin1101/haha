@@ -22,14 +22,11 @@ def create_login_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new login table!'
 		sql='''create table if not exists LOGINDATA
 		(USERID INTEGER PRIMARY KEY AUTOINCREMENT,
 		USERNAME CHAR(20),
 		PASSWORD CHAR(20));'''
 		conn.execute(sql)
-	else:
-		print'login table exist'
 	return conn
 
 def check_login_name(conn,user):
@@ -38,14 +35,11 @@ def check_login_name(conn,user):
 	cur.execute(sql)
 	dbusername=cur.fetchone()
 	if(dbusername == None):
-		print 'valid account'
 		return 1
 	idlist=set(id.lower() for id in dbusername)
 	if user.lower() in idlist:
-		print 'exist username'
 		return 0
 	else:
-		print'valid account'
 		return 1
 
 def insert_login_data(conn,user,word):
@@ -58,13 +52,10 @@ def create_session_database(db_file):
 	db_not_yet_create = not os.path.exists(db_file)
 	conn2 = sqlite3.connect(db_file)
 	if db_not_yet_create:
-		print'Create a new session table!'
 		sql='''create table if not exists SESSIONDATA
 		(USERNAME CHAR(20),
 		SESSION INTEGER);'''
 		conn2.execute(sql)
-	else:
-		print'login table exist'
 	return conn2
 
 conn=create_login_database('login_db.sqite')
@@ -74,21 +65,18 @@ try:
 except IndexError:
 	sendusername=None
 
-print sendusername
 
 try:
 	sendpassword=form.getvalue('password',None)
 except IndexError:
 	sendpassword=None
 
-print sendpassword
 
 try:
 	sendrepassword=form.getvalue('repassword',None)
 except IndexError:
 	sendrepassword=None
 
-print sendrepassword
 state=2
 if(sendpassword!= sendrepassword):
 	print'password is not equal to sendrepassword!<br/>'

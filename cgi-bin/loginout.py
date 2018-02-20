@@ -19,18 +19,16 @@ cgitb.enable()
 print'<html><body>'
 
 print'''
-<form action="loginexe.py" method="post">
+<form action="createexe.py" method="post">
 username: <input type="text" name="username"/><br/>
 password: <input type="password" name="password"/><br/>
-<input type ="submit" value="login" name="submit" /><br/>
+retype password:  <input type="password" name="repassword"/><br/>
+<input type ="submit" value="register" name="submit" /><br/>
 </form>'''
 
 print'''
-<form action="create.py" method="post">
-No account? <input type ="submit" value="sign up" name="submit" />
+<form action="login.py" method="post">
+Have an account already? <input type ="submit" value="login" name="submit" />
 </form>'''
-
-
-
 
 print '</body></html>'
