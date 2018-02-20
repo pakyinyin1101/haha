@@ -11,4 +11,8 @@ app.py:It starts the program to open the server.It links the /cgi-bin/index.py.
 
 /cgi-bin/createexe.py:It reads the usersname and password from /cgi-bin/create.py.It checks the user input type is valid or not.If not,print error message and redirect to /cgi-bin/login.py.Then it visits the database "login.db.sqite" to check there are usersname that is registered by others.If there exists username used,it prints error message and redirects to /cgi-bin/create.py.If not, it inserts the username and password to database "login.db.sqite". It also inserts username and default session var = -1 into databse"session.db.sqite".It generates the 'login' button (direct to /cgi-bin/login.py).
 
-/cgi-bin/update.py:I
+/cgi-bin/update.py:It reads the cookies to check which user visits this webpage.It prints current password,new password and retype password.It directs to /cgi-bin/updateexe.py to change password.
+
+/cgi-bin/updateexe.py:It reads the current password, new password and new repassword from /cgi-bin/create.py.It updates username and password.
+
+/cgi-bin/redirect.py:
